@@ -6,14 +6,14 @@ services:
     command: ["postgres", "-c", "log_statement=${DB_LOG_LEVEL:-all}"]
     restart: "no"
     networks:
-      - base-network
+      - cpmpany-base-network
     ports:
       - ${NODE_DEBUGGER_PORT:-5432}:5432
       - ${SERVER_PORT:-300}:3000
     environment:
       - POSTGRES_USER=${DB_USER:-AppUser}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-AppUserSecret}
-      - POSTGRES_DB=${DB_DATABASE:-BaseDb}
+      - POSTGRES_DB=${DB_DATABASE:-CompanyBaseDb}
   nest-server:
     build:
       context: .
@@ -24,12 +24,12 @@ services:
       - ${NODE_DEBUGGER_PORT:-9229}:9229
       - ${NODE_DEBUGGER_TEST_PORT:-9230}:9230
     networks:
-      - base-network
+      - cpmpany-base-network
     volumes:
       - ../../project:/usr/src/project
       - ./entrypoint.sh:/entrypoint.sh
     depends_on:
       - sql-server
 networks:
-  base-network:
+  cpmpany-base-network:
     external: false
