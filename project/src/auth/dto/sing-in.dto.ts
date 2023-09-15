@@ -11,8 +11,10 @@ export class SingInDto {
   email: string;
 
   @DtoProperty({
-    description: 'User password',
-    example: 'pass',
+    description: `Password should be more that 8 character, 
+    a combination of alphanumeric and special character it and
+   shall not contain any two identical consecutive characters.`,
+    example: 'pasword1-',
   })
   @isValidPassword()
   password: string;
