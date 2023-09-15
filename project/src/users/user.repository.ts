@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { User, hashUserPassword } from './entities/user.entity';
 import { DataSource } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUserDTO } from './dto/filter-user.dto';
 import { BaseRepository } from 'src/shared/repositories/base.repository';
+import { DBErrorType, parseDBError } from 'src/shared/db/parseDBError';
 
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
@@ -19,10 +24,20 @@ export class UserRepository extends BaseRepository<User> {
    * @memberof UserRepository
    */
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const user = this.create(createUserDto);
-    //TODO: Auth module with hash method.
-    user.hashedPassword = await hashUserPassword(createUserDto.password);
-    return this.save(user);
+    let user: User | undefined = undefined;
+    try {
+      user = this.create(createUserDto);
+      user.hashedPassword = await hashUserPassword(createUserDto.password);
+      user = await this.save(user);
+    } catch (error) {
+      if (parseDBError(error).type === DBErrorType.DUPLICATE_ENTRY) {
+        throw new ConflictException(
+          'Already exist a user with the same email.',
+        );
+      }
+      throw error;
+    }
+    return user;
   }
 
   /**

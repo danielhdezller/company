@@ -36,6 +36,7 @@ export class User extends AppEntity {
 
   @Column({
     length: APP_DB_SPECS.MAX_EMAIL_LENGTH,
+    unique: true,
   })
   @DtoProperty({
     description: 'Email of the user.',
