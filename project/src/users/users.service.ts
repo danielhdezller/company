@@ -25,7 +25,11 @@ export class UsersService {
     return this.userRepository.getUserById(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  getUserByEmail(email: string): Promise<User> {
+    return this.userRepository.getUserByEmail(email);
+  }
+
+  update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     return this.userRepository.updateUser(id, updateUserDto);
   }
 

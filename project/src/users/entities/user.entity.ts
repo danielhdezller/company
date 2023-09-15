@@ -4,6 +4,7 @@ import { AppEntity } from 'src/shared/base.entity';
 import { DtoProperty } from 'src/shared/dto-property';
 import { IsNotEmptyString } from 'src/shared/validators/is-not-empty-string.validator';
 import { Column, Entity } from 'typeorm';
+import { compare as compareHash, genSalt, hash } from 'bcryptjs';
 
 export enum TShirtSizeEnum {
   L = 'L',
@@ -97,4 +98,35 @@ export class User extends AppEntity {
   })
   @IsEnum(RoleEnum)
   roles: RoleEnum;
+
+  /**
+   * Check if the provided password is valid.
+   *
+   * @param {string} password
+   * @returns {boolean}
+   * @memberof User
+   */
+  async checkPassword(password: string): Promise<boolean> {
+    return await compareHash(password, this.hashedPassword);
+  }
+}
+
+/**
+ * Generates a hash object using a password and a optional salt.
+ * If the salt is not provided creates a new one.
+ *
+ * @private
+ * @param {string} rawPassword  The raw password to transform into a hash.
+ * @param {string} [customSalt] Optional salt, if the salt is not provided creates a new one.
+ * @returns {Promise<HashPassword>}
+ * @memberof User
+ */
+export async function hashUserPassword(
+  rawPassword: string,
+  customSalt?: string,
+): Promise<string> {
+  const salt = customSalt ?? (await genSalt());
+  const password = await hash(rawPassword, salt);
+
+  return password;
 }

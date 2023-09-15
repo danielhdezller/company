@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User } from './entities/user.entity';
+import { User, hashUserPassword } from './entities/user.entity';
 import { DataSource } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUserDTO } from './dto/filter-user.dto';
@@ -21,7 +21,7 @@ export class UserRepository extends BaseRepository<User> {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const user = this.create(createUserDto);
     //TODO: Auth module with hash method.
-    user.hashedPassword = createUserDto.password;
+    user.hashedPassword = await hashUserPassword(createUserDto.password);
     return this.save(user);
   }
 
@@ -61,6 +61,14 @@ export class UserRepository extends BaseRepository<User> {
     const user = await this.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User not found with id: ${id}.`);
+    }
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User> {
+    const user = await this.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException(`User not found with id: ${email}.`);
     }
     return user;
   }
