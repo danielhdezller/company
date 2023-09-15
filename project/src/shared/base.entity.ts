@@ -10,24 +10,29 @@ import { validateOrReject } from 'class-validator';
 import { OmitFunctions } from './type-utils';
 import { cloneDeep } from 'lodash';
 import { removeUndefinedProperties } from './helpers/remove-undefined-properties';
+import { DtoOptionalProperty, DtoProperty } from './dto-property';
 
 export abstract class AppEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @DtoProperty()
   id: number;
 
   @Column({
     name: 'created_at',
   })
+  @DtoProperty()
   createdAt: Date;
 
   @Column({
     name: 'updated_at',
   })
+  @DtoProperty()
   updatedAt: Date;
 
   @DeleteDateColumn({
     name: 'deleted_at',
   })
+  @DtoOptionalProperty()
   deletedAt?: Date;
 
   @BeforeInsert()

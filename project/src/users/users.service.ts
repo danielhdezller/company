@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { FilterUserDTO } from './dto/filter-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -16,8 +17,8 @@ export class UsersService {
     return this.userRepository.createUser(createUserDto);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(filter: FilterUserDTO): Promise<User[]> {
+    return this.userRepository.findAll(filter);
   }
 
   findOne(id: number) {
