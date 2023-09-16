@@ -1,6 +1,4 @@
-# Nest Base Project with PostgreSQL
-
-A Nestjs with PostgreSql template to start a new project.
+# Company Project
 
 ## Steps to run the project:
 
@@ -34,5 +32,5 @@ $ yarn test
 
 - Author - [Daniel Hernández](https://github.com/danielhdezller)
 - LinkedIn - [LinkedIn](https://www.linkedin.com/in/daniel-hernandez-ller/)
-  
+
 ![officer-peña](https://github.com/danielhdezller/nest-sql-base/assets/63543622/626b66cf-457f-4c32-9b53-a7f5d2e68db5)
