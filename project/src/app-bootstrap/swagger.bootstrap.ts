@@ -26,7 +26,7 @@ export function configureDocumentationGenerator(
       .setTitle('Nest')
       .setDescription('API documentation.')
       .setContact(
-        'Weather',
+        'Company',
         'https://github.com/danielhdezllera',
         'dhdezllerena94@gmail.com',
       )
