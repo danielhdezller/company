@@ -24,6 +24,11 @@ export function isValidPassword(
 export class IsValidPassword implements ValidatorConstraintInterface {
   validate(password: string): boolean {
     try {
+      if (!password) {
+        throw new UnprocessableEntityException(
+          'The property password must be sent.',
+        );
+      }
       if (password.length <= 8) {
         throw new UnprocessableEntityException(
           'Password should be more that 8 character.',

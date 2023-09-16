@@ -83,7 +83,7 @@ export class UserRepository extends BaseRepository<User> {
   async getUserByEmail(email: string): Promise<User> {
     const user = await this.findOne({ where: { email } });
     if (!user) {
-      throw new NotFoundException(`User not found with id: ${email}.`);
+      throw new NotFoundException(`User not found with email: ${email}.`);
     }
     return user;
   }

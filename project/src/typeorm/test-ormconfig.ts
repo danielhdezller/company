@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { User } from 'src/users/entities/user.entity';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 export const jestDataSourceOptions: DataSourceOptions = {
@@ -8,7 +9,7 @@ export const jestDataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USER_TEST,
   password: process.env.DB_PASSWORD_TEST,
   database: process.env.DB_DATABASE_TEST,
-  entities: [],
+  entities: [User],
   synchronize: true,
 };
 
